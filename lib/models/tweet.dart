@@ -1,13 +1,13 @@
 import "user.dart";
 
-class Tweets {
+class Tweet {
   String id;
   String createdAt;
   User user;
   String text;
   String fullText;
 
-  Tweets(dynamic map) {
+  Tweet(dynamic map) {
     if (map != null) {
       id = map["id_str"] as String;
       createdAt = map["created_at"] as String;
