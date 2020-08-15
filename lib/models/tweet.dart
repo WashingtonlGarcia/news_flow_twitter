@@ -1,3 +1,5 @@
+import "package:intl/intl.dart";
+
 import "user.dart";
 
 class Tweet {
@@ -22,7 +24,6 @@ class Tweet {
 
   String get urlTweet => "https://twitter.com/${user.screenName}/status/$id";
 
-// TODO convert date
   String get dateFormat {
     final List<String> aux = createdAt
         .replaceAll("Jan", "01")
@@ -37,7 +38,18 @@ class Tweet {
         .replaceAll("Oct", "10")
         .replaceAll("Nov", "11")
         .replaceAll("Dec", "12")
+        .replaceAll("Sat", "Sáb")
+        .replaceAll("Sun", "Dom")
+        .replaceAll("Mon", "Seg")
+        .replaceAll("Tue", "Ter")
+        .replaceAll("Sat", "Qua")
+        .replaceAll("Thu", "Qui")
+        .replaceAll("Fri", "Sex")
+        .replaceAll("Sun", "Dom")
         .split(" ");
-    return "${aux[2]}/${aux[1]}/${aux[5]} ${aux[3]}";
+
+    return DateFormat("dd/MM/yyyy hh:mm", "pt_Br").format(
+        DateTime.parse("${aux[5]}-${aux[1]}-${aux[2]} ${aux[3]}")
+            .subtract(const Duration(hours: 3)));
   }
 }

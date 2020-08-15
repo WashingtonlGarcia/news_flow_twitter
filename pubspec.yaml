@@ -10,9 +10,13 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations: #Adicionado para ultilizar data em português
+    sdk: flutter
+
   cupertino_icons: ^0.1.3
   flutter_dotenv: ^2.1.0
   twitter_api: ^0.1.2
+  intl: ^0.16.1
 
 dev_dependencies:
   flutter_test:

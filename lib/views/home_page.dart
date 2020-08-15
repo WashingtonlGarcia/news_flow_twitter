@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import "package:news_flow/controllers/twitter_controller.dart";
 
 class HomePage extends StatelessWidget {
   static const String routeName = "/";
@@ -8,6 +9,13 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: _appBar(),
       body: _body(),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          TwitterController().getListTweet("@divinobfilho").then((dynamic value) {
+            debugPrint(value[3].dateFormat.toString());
+          });
+        },
+      ),
     );
   }
 
