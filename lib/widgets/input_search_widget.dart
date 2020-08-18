@@ -35,7 +35,7 @@ class _InputSearchWidgetState extends State<InputSearchWidget> {
   bool _autoValidate = false;
 
 /*  bool _isLoading = false;*/
-
+// todo arrumar botao
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -56,7 +56,12 @@ class _InputSearchWidgetState extends State<InputSearchWidget> {
                         .requestFocus(widget.onFieldSubmitted as FocusNode);
                   }
                 : (String value) {
-                    widget.submitForm();
+                    _autoValidate = true;
+                    if (_formKey.currentState.validate()) {
+                      widget.submitForm();
+                      _autoValidate = false;
+                      Focus.of(context).unfocus();
+                    }
                   },
             textInputAction: widget.textInputAction,
             controller: widget.textEditingController,
@@ -71,16 +76,15 @@ class _InputSearchWidgetState extends State<InputSearchWidget> {
                     ),
                     borderSide: BorderSide.none),
                 filled: true,
-                fillColor: Theme.of(context).backgroundColor,
+                fillColor: Colors.grey.withOpacity(0.1),
                 contentPadding:
                     const EdgeInsets.symmetric(horizontal: 12, vertical: 12)),
           )),
           ButtonIconWidget(
             onTap: () {
-              _autoValidate = true;
-              if (_formKey.currentState.validate()) {
-                widget.submitForm();
-              }
+              Focus.of(context).unfocus();
+              widget.submitForm();
+
             },
             icon: Icons.search,
           ),
