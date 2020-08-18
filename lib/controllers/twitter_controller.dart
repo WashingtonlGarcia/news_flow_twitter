@@ -1,6 +1,7 @@
 import "dart:convert";
 
 import "package:flutter_dotenv/flutter_dotenv.dart";
+
 import "package:twitter_api/twitter_api.dart";
 
 import "../models/tweet.dart";
@@ -21,6 +22,7 @@ class TwitterController {
           "tweet_mode": "extended",
         });
     final dynamic response = json.decode(res.body.toString());
+
     final List<Tweet> listTweets = <Tweet>[];
     for (final dynamic tweet in response) {
       listTweets.add(Tweet(tweet));
