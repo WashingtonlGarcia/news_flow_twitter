@@ -22,7 +22,7 @@ class InputSearchWidget extends StatefulWidget {
     @required this.validator,
     @required this.hintText,
     @required this.onFieldSubmitted,
-    this.autoFocus = true,
+    this.autoFocus = false,
   });
 
   @override
@@ -34,8 +34,6 @@ class _InputSearchWidgetState extends State<InputSearchWidget> {
 
   bool _autoValidate = false;
 
-/*  bool _isLoading = false;*/
-// todo arrumar botao
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -82,9 +80,13 @@ class _InputSearchWidgetState extends State<InputSearchWidget> {
           )),
           ButtonIconWidget(
             onTap: () {
-              Focus.of(context).unfocus();
-              widget.submitForm();
+              _autoValidate = true;
 
+              if (_formKey.currentState.validate()) {
+                widget.submitForm();
+                _autoValidate = false;
+                widget.focusNode.unfocus();
+              }
             },
             icon: Icons.search,
           ),

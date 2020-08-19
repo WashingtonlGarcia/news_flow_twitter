@@ -13,7 +13,8 @@ class ListTileTweetWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.only(top: 8, left: 8, right: 8),
-      decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(12)),
+      decoration: BoxDecoration(
+          color: Colors.white, borderRadius: BorderRadius.circular(12)),
       child: Column(
         children: <Widget>[
           Row(
@@ -22,20 +23,42 @@ class ListTileTweetWidget extends StatelessWidget {
                 padding: const EdgeInsets.only(right: 4, left: 4),
                 child: CircleAvatarWidget(imageUrl: tweet.user.profileImageUrl),
               ),
-              Expanded(
-                child: Text(
-                  tweet.user.name,
-                  overflow: TextOverflow.ellipsis,
-                  style: _textStyle(fontWeight: FontWeight.w500),
-                ),
-              ),
               const SizedBox(
                 width: 4,
               ),
-              Text(
-                tweet.dateFormat,
-                style: _textStyle(fontSize: 10),
-              )
+              Expanded(
+                child: Column(
+                  children: <Widget>[
+                    Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: Text(
+                            tweet.user.name,
+                            overflow: TextOverflow.ellipsis,
+                            style: _textStyle(fontWeight: FontWeight.w500),
+                          ),
+                        ),
+                        Text(
+                          tweet.dateFormat,
+                          style: _textStyle(fontSize: 10),
+                        )
+                      ],
+                    ),
+                    Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: Text(
+                            "@${tweet.user.screenName}",
+                            overflow: TextOverflow.ellipsis,
+                            style: _textStyle(
+                                fontWeight: FontWeight.w500, fontSize: 10),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
           Container(
@@ -47,12 +70,18 @@ class ListTileTweetWidget extends StatelessWidget {
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[Expanded(child: Text(tweet.fullText ?? tweet.text))],
+              children: <Widget>[
+                Expanded(child: Text(tweet.fullText ?? tweet.text))
+              ],
             ),
           ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
+              Icon(
+                Icons.insert_emoticon,
+                color: Theme.of(context).accentColor,
+              ),
               FlatButton(
                   textColor: Theme.of(context).accentColor,
                   onPressed: () {
@@ -66,7 +95,9 @@ class ListTileTweetWidget extends StatelessWidget {
     );
   }
 
-  TextStyle _textStyle({double fontSize = 12, FontWeight fontWeight = FontWeight.normal}) => TextStyle(
+  TextStyle _textStyle(
+          {double fontSize = 12, FontWeight fontWeight = FontWeight.normal}) =>
+      TextStyle(
         fontSize: fontSize,
         fontWeight: fontWeight,
       );

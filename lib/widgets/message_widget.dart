@@ -17,7 +17,7 @@ class MessageWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Icon(
-            Icons.search,
+            iconData,
             size: MediaQuery.of(context).size.height * 0.1,
             color: Colors.grey,
           ),

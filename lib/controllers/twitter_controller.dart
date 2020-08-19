@@ -21,6 +21,7 @@ class TwitterController {
           "count": "300",
           "tweet_mode": "extended",
         });
+    if (res.body == null) return null;
     final dynamic response = json.decode(res.body.toString());
 
     final List<Tweet> listTweets = <Tweet>[];

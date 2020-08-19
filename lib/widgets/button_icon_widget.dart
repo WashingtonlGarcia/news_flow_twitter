@@ -2,7 +2,7 @@ import "package:flutter/material.dart";
 
 class ButtonIconWidget extends StatelessWidget {
   final IconData icon;
-  final Function onTap;
+  final void Function() onTap;
 
   const ButtonIconWidget({@required this.icon, @required this.onTap});
 
@@ -15,7 +15,7 @@ class ButtonIconWidget extends StatelessWidget {
           borderRadius: const BorderRadius.only(
               topRight: Radius.circular(12), bottomRight: Radius.circular(12)),
           splashColor: Theme.of(context).primaryColorDark,
-          onTap: () => onTap(),
+          onTap: onTap,
           child: Padding(
             padding: const EdgeInsets.all(12),
             child: Icon(

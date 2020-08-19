@@ -29,25 +29,22 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-/*
-  Stream<List<Tweet>> getFutureListTweets() {
-    return
-  }
-*/
+  Future<List<Tweet>> getListTweets() => TwitterController().getListTweet(
+        search,
+      );
 
   @override
   void initState() {
     super.initState();
-/*    Provider.of<SearchProvider>(context).addListener(() {
-      listFutureTweets = getFutureListTweets();
-    });*/
+
+    listFutureTweets = getListTweets();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       resizeToAvoidBottomPadding: false,
+      resizeToAvoidBottomInset: false,
       backgroundColor: Theme.of(context).backgroundColor,
       body: _body(),
       appBar: _appBar(),
@@ -100,34 +97,43 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               Expanded(
-                  child: FutureBuilder<List<Tweet>>(
-                future: TwitterController().getListTweet(
-                  search,
-                ),
-                builder: (BuildContext context, AsyncSnapshot<List<Tweet>> snapshot) {
-                  switch (snapshot.connectionState) {
-                    case ConnectionState.none:
-                    case ConnectionState.waiting:
-                      return CenterIndicatorWidget();
-                    case ConnectionState.active:
-                    case ConnectionState.done:
-                      if (snapshot.data == null || snapshot.data.isEmpty) {
-                        return const MessageWidget();
-                      }
-                      return ListView.builder(
-                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                        itemCount: snapshot.data.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return Padding(
-                            padding: const EdgeInsets.only(bottom: 4, top: 4),
-                            child: ListTileTweetWidget(tweet: snapshot.data[index]),
-                          );
-                        },
-                      );
-                    default:
-                      return Container();
-                  }
+                  child: RefreshIndicator(
+                onRefresh: () {
+                  setState(() {});
+                  return Future<void>.value();
                 },
+                child: FutureBuilder<List<Tweet>>(
+                  future: TwitterController().getListTweet(
+                    search,
+                  ),
+                  builder: (BuildContext context,
+                      AsyncSnapshot<List<Tweet>> snapshot) {
+                    switch (snapshot.connectionState) {
+                      case ConnectionState.none:
+                      case ConnectionState.waiting:
+                        return CenterIndicatorWidget();
+                      case ConnectionState.active:
+                      case ConnectionState.done:
+                        if (snapshot.data == null || snapshot.data.isEmpty) {
+                          return const MessageWidget();
+                        }
+                        return ListView.builder(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 8),
+                          itemCount: snapshot.data.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return Padding(
+                              padding: const EdgeInsets.only(bottom: 4, top: 4),
+                              child: ListTileTweetWidget(
+                                  tweet: snapshot.data[index]),
+                            );
+                          },
+                        );
+                      default:
+                        return const MessageWidget();
+                    }
+                  },
+                ),
               )),
             ],
           ),
