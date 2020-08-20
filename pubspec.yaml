@@ -17,6 +17,10 @@ dependencies:
   flutter_dotenv: ^2.1.0
   twitter_api: ^0.1.2
   intl: ^0.16.1
+  #Firebase
+  cloud_functions: 0.4.1+8
+  cloud_firestore: 0.13.7
+  http: ^0.12.2
 
 dev_dependencies:
   flutter_test:
