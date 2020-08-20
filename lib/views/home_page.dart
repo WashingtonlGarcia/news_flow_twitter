@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+<<<<<<< HEAD
 import "package:flutter_icons/flutter_icons.dart";
 
 import "package:news_flow/controllers/twitter_controller.dart";
@@ -8,6 +9,9 @@ import "package:news_flow/widgets/center_indicator_widget.dart";
 import "package:news_flow/widgets/input_search_widget.dart";
 import "package:news_flow/widgets/list_tile_tweet_widget.dart";
 import "package:news_flow/widgets/message_widget.dart";
+
+import "package:news_flow/controllers/firebase_controller.dart";
+
 
 class HomePage extends StatefulWidget {
   static const String routeName = "/";
@@ -47,7 +51,16 @@ class _HomePageState extends State<HomePage> {
       resizeToAvoidBottomInset: false,
       backgroundColor: Theme.of(context).backgroundColor,
       body: _body(),
+
       appBar: _appBar(),
+
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          FirebaseController().callTest("test").then((dynamic value) {
+            debugPrint(value.toString());
+          });
+        },
+      ),
     );
   }
 
