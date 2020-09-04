@@ -1,5 +1,5 @@
 import "package:intl/intl.dart";
-
+import "package:meta/meta.dart";
 import "user.dart";
 
 class Tweet {
@@ -8,18 +8,24 @@ class Tweet {
   User user;
   String text;
   String fullText;
+  String score;
 
-  Tweet(dynamic map) {
-    if (map != null) {
-      id = map["id_str"] as String;
-      createdAt = map["created_at"] as String;
-      user = User(map["user"]);
-      text = map["full_text"] as String;
-      if (map["retweeted_status"] != null &&
-          map["retweeted_status"]["full_text"] != null) {
-        fullText = map["retweeted_status"]["full_text"] as String ?? "";
-      }
-    }
+  Tweet({
+    @required this.id,
+    @required this.createdAt,
+    @required this.user,
+    @required this.fullText,
+    @required this.text,
+  });
+
+  factory Tweet.from(dynamic map) {
+    return Tweet(
+        id: map["id_str"] as String,
+        createdAt: map["created_at"] as String,
+        user: User.fromMap(map["user"] as Map<String, dynamic>),
+        fullText:
+            map["retweeted_status"] != null && map["retweeted_status"]["full_text"] != null ? map["retweeted_status"]["full_text"] as String : null,
+        text: map["full_text"] as String);
   }
 
   String get urlTweet => "https://twitter.com/${user.screenName}/status/$id";
@@ -48,8 +54,7 @@ class Tweet {
         .replaceAll("Sun", "Dom")
         .split(" ");
 
-    return DateFormat("dd/MM/yyyy hh:mm", "pt_Br").format(
-        DateTime.parse("${aux[5]}-${aux[1]}-${aux[2]} ${aux[3]}")
-            .subtract(const Duration(hours: 3)));
+    return DateFormat("dd/MM/yyyy hh:mm", "pt_Br")
+        .format(DateTime.parse("${aux[5]}-${aux[1]}-${aux[2]} ${aux[3]}").subtract(const Duration(hours: 3)));
   }
 }

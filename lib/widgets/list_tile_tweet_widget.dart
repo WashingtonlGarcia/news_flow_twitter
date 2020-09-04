@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+
 import "package:url_launcher/url_launcher.dart";
 import "package:news_flow/models/tweet.dart";
 
@@ -13,8 +14,7 @@ class ListTileTweetWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.only(top: 8, left: 8, right: 8),
-      decoration: BoxDecoration(
-          color: Colors.white, borderRadius: BorderRadius.circular(12)),
+      decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(12)),
       child: Column(
         children: <Widget>[
           Row(
@@ -50,8 +50,7 @@ class ListTileTweetWidget extends StatelessWidget {
                           child: Text(
                             "@${tweet.user.screenName}",
                             overflow: TextOverflow.ellipsis,
-                            style: _textStyle(
-                                fontWeight: FontWeight.w500, fontSize: 10),
+                            style: _textStyle(fontWeight: FontWeight.w500, fontSize: 10),
                           ),
                         ),
                       ],
@@ -70,17 +69,15 @@ class ListTileTweetWidget extends StatelessWidget {
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Expanded(child: Text(tweet.fullText ?? tweet.text))
-              ],
+              children: <Widget>[Expanded(child: Text(tweet.fullText ?? tweet.text))],
             ),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Icon(
-                Icons.insert_emoticon,
-                color: Theme.of(context).accentColor,
+                tweet.score == "[-1]" ? Icons.trending_down : tweet.score == "[1]" ? Icons.trending_up : Icons.trending_flat,
+                color: tweet.score == "[-1]" ? Colors.red : tweet.score == "[1]" ? Colors.green : Colors.grey,
               ),
               FlatButton(
                   textColor: Theme.of(context).accentColor,
@@ -95,9 +92,7 @@ class ListTileTweetWidget extends StatelessWidget {
     );
   }
 
-  TextStyle _textStyle(
-          {double fontSize = 12, FontWeight fontWeight = FontWeight.normal}) =>
-      TextStyle(
+  TextStyle _textStyle({double fontSize = 12, FontWeight fontWeight = FontWeight.normal}) => TextStyle(
         fontSize: fontSize,
         fontWeight: fontWeight,
       );

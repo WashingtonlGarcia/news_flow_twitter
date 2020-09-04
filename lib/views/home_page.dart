@@ -1,17 +1,15 @@
 import "package:flutter/material.dart";
-<<<<<<< HEAD
+
 import "package:flutter_icons/flutter_icons.dart";
 
-import "package:news_flow/controllers/twitter_controller.dart";
 import "package:news_flow/models/tweet.dart";
+import "package:news_flow/services/twitter_service.dart";
+
 import "package:news_flow/widgets/center_indicator_widget.dart";
 
 import "package:news_flow/widgets/input_search_widget.dart";
 import "package:news_flow/widgets/list_tile_tweet_widget.dart";
 import "package:news_flow/widgets/message_widget.dart";
-
-import "package:news_flow/controllers/firebase_controller.dart";
-
 
 class HomePage extends StatefulWidget {
   static const String routeName = "/";
@@ -33,7 +31,7 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  Future<List<Tweet>> getListTweets() => TwitterController().getListTweet(
+  Future<List<Tweet>> getListTweets() => TwitterService().getListTweet(
         search,
       );
 
@@ -51,16 +49,7 @@ class _HomePageState extends State<HomePage> {
       resizeToAvoidBottomInset: false,
       backgroundColor: Theme.of(context).backgroundColor,
       body: _body(),
-
       appBar: _appBar(),
-
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          FirebaseController().callTest("test").then((dynamic value) {
-            debugPrint(value.toString());
-          });
-        },
-      ),
     );
   }
 
@@ -84,72 +73,63 @@ class _HomePageState extends State<HomePage> {
         ),
       );
 
-  Widget _body() => Stack(
+  Widget _body() => Column(
         children: <Widget>[
-          Align(
-              alignment: Alignment.centerLeft,
-              child: Image.asset("assets/images/twitter-logo.png")),
-          Column(
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: InputSearchWidget(
-                  onFieldSubmitted: submitForm,
-                  focusNode: focusNode,
-                  validator: (String value) {
-                    if (value == null || value.trim().isEmpty) {
-                      return "Campo obrigatorio";
-                    }
-                    return null;
-                  },
-                  keyboardType: TextInputType.multiline,
-                  textInputAction: TextInputAction.done,
-                  hintText: "Digite o nome do usuário",
-                  submitForm: submitForm,
-                  textEditingController: textEditingController,
-                ),
-              ),
-              Expanded(
-                  child: RefreshIndicator(
-                onRefresh: () {
-                  setState(() {});
-                  return Future<void>.value();
-                },
-                child: FutureBuilder<List<Tweet>>(
-                  future: TwitterController().getListTweet(
-                    search,
-                  ),
-                  builder: (BuildContext context,
-                      AsyncSnapshot<List<Tweet>> snapshot) {
-                    switch (snapshot.connectionState) {
-                      case ConnectionState.none:
-                      case ConnectionState.waiting:
-                        return CenterIndicatorWidget();
-                      case ConnectionState.active:
-                      case ConnectionState.done:
-                        if (snapshot.data == null || snapshot.data.isEmpty) {
-                          return const MessageWidget();
-                        }
-                        return ListView.builder(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 16, vertical: 8),
-                          itemCount: snapshot.data.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return Padding(
-                              padding: const EdgeInsets.only(bottom: 4, top: 4),
-                              child: ListTileTweetWidget(
-                                  tweet: snapshot.data[index]),
-                            );
-                          },
-                        );
-                      default:
-                        return const MessageWidget();
-                    }
-                  },
-                ),
-              )),
-            ],
+          Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: InputSearchWidget(
+              onFieldSubmitted: submitForm,
+              focusNode: focusNode,
+              validator: (String value) {
+                if (value == null || value.trim().isEmpty) {
+                  return "Campo obrigatorio";
+                }
+                return null;
+              },
+              keyboardType: TextInputType.multiline,
+              textInputAction: TextInputAction.done,
+              hintText: "Digite o nome do usuário",
+              submitForm: submitForm,
+              textEditingController: textEditingController,
+            ),
           ),
+          Expanded(
+              child: RefreshIndicator(
+            onRefresh: () {
+              setState(() {});
+              return Future<void>.value();
+            },
+            child: FutureBuilder<List<Tweet>>(
+              future: TwitterService().getListTweet(
+                search,
+              ),
+              builder: (BuildContext context, AsyncSnapshot<List<Tweet>> snapshot) {
+                switch (snapshot.connectionState) {
+                  case ConnectionState.none:
+                  case ConnectionState.waiting:
+                    return CenterIndicatorWidget();
+                  case ConnectionState.active:
+                  case ConnectionState.done:
+                    if (snapshot.data == null || snapshot.data.isEmpty) {
+                      return const MessageWidget();
+                    }
+
+                    return ListView.builder(
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      itemCount: snapshot.data.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 4, top: 4),
+                          child: ListTileTweetWidget(tweet: snapshot.data[index]),
+                        );
+                      },
+                    );
+                  default:
+                    return const MessageWidget();
+                }
+              },
+            ),
+          )),
         ],
       );
 }
